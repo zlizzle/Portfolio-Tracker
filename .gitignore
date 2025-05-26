@@ -1,5 +1,15 @@
-venv
-__pycache__
+#Python artifacts
+__pycache__/
 *.py[cod]
+
+#Virtual environments
+venv/
+
+#Local env file
 .env
+
+#Database file (if local)
 portfolio.db
+
+#macOS metadata
+.DS_Store
