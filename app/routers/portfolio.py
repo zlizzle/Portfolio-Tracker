@@ -39,6 +39,7 @@ def get_token_price(symbol: str = Query(..., example="SOL")):
 def get_portfolio_value():
     assets = get_assets()
     total_value = 0.0
+    total_pnl = 0.0
     breakdown = []
 
     for asset in assets:
@@ -50,20 +51,26 @@ def get_portfolio_value():
                 "average_price": asset.average_price,
                 "live_price_usd": None,
                 "value_usd": None,
+                "pnl_usd": None,
                 "error": "Price not found"
             })
             continue
         value = asset.quantity * price
+        pnl = (price - asset.average_price) * asset.quantity
         total_value += value
+        total_pnl += pnl
         breakdown.append({
             "symbol": asset.symbol,
             "quantity": asset.quantity,
             "average_price": asset.average_price,
             "live_price_usd": price,
-            "value_usd": value
+            "value_usd": value,
+            "pnl_usd": pnl
         })
+
 
     return {
         "total_portfolio_value_usd": total_value,
+        "total_portfolio_pnl_usd": total_pnl,
         "assets": breakdown
     }
