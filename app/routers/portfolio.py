@@ -1,7 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from typing import List
 from ..schemas import AssetCreate, AssetRead
-from ..crud import create_asset, get_assets
+from ..crud import create_asset, get_assets, update_asset, delete_asset
 
 router = APIRouter()
 
@@ -12,3 +12,17 @@ def add_asset(asset: AssetCreate):
 @router.get("/", response_model=List[AssetRead])
 def list_assets():
     return get_assets()
+
+@router.put("/{asset_id}", response_model=AssetRead)
+def edit_asset(asset_id: int, asset: AssetCreate):
+    updated = update_asset(asset_id, asset)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    return updated
+
+@router.delete("/{asset_id}")
+def remove_asset(asset_id: int):
+    success = delete_asset(asset_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    return {"ok": True}
