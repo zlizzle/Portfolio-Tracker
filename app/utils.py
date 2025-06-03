@@ -4,13 +4,13 @@ COINGECKO_IDS= {
     "BTC": "bitcoin",
     "ETH": "ethereum",
     "SOL": "solana",
-    "DOGE": "dogecoin",
+    "HYPE": "hyperliquid",
     "PEPE": "pepecoin",
     "WIF": "dogwifhat"
 }
 
 def fetch_token_price(symbol: str):
-    token_id = coingecko_ids.get(symbol.upper())
+    token_id = COINGECKO_IDS.get(symbol.upper())
     if not token_id:
         return None
 
