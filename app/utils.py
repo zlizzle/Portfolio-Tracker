@@ -1,13 +1,15 @@
 import requests
 
+COINGECKO_IDS= {
+    "BTC": "bitcoin",
+    "ETH": "ethereum",
+    "SOL": "solana",
+    "DOGE": "dogecoin",
+    "PEPE": "pepecoin",
+    "WIF": "dogwifhat"
+}
+
 def fetch_token_price(symbol: str):
-    
-    coingecko_ids = {
-        "BTC": "bitcoin",
-        "ETH": "ethereum",
-        "SOL": "solana",
-        
-    }
     token_id = coingecko_ids.get(symbol.upper())
     if not token_id:
         return None
