@@ -34,3 +34,36 @@ def get_token_price(symbol: str = Query(..., example="SOL")):
     if price is None:
         raise HTTPException(status_code=404, detail="Token not found or no price available")
     return {"symbol": symbol.upper(), "price_usd": price}
+
+@router.get("/portfolio/value")
+def get_portfolio_value():
+    assets = get_assets()
+    total_value = 0.0
+    breakdown = []
+
+    for asset in assets:
+        price = fetch_token_price(asset.symbol)
+        if price is None:
+            breakdown.append({
+                "symbol": asset.symbol,
+                "quantity": asset.quantity,
+                "average_price": asset.average_price,
+                "live_price_usd": None,
+                "value_usd": None,
+                "error": "Price not found"
+            })
+            continue
+        value = asset.quantity * price
+        total_value += value
+        breakdown.append({
+            "symbol": asset.symbol,
+            "quantity": asset.quantity,
+            "average_price": asset.average_price,
+            "live_price_usd": price,
+            "value_usd": value
+        })
+
+    return {
+        "total_portfolio_value_usd": total_value,
+        "assets": breakdown
+    }
