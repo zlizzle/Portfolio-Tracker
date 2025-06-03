@@ -2,6 +2,8 @@
 
 A simple, extendable web application to manage and track financial assets in your portfolio. Built with FastAPI and SQLModel, it provides core CRUD operations and is designed to evolve with features like authentication, analytics, and performance optimizations using Rust microservices.
 
+![Status](https://img.shields.io/badge/status-in--progress-yellow)
+
 ## Table of Contents
 
 * [Features](#features)
@@ -80,10 +82,14 @@ A simple, extendable web application to manage and track financial assets in you
 
 ## API Endpoints
 
-| Method | Path       | Description               |
-| ------ | ---------- | ------------------------- |
-| POST   | `/assets/` | Create a new asset record |
-| GET    | `/assets/` | Retrieve a list of assets |
+| Method | Path                     | Description                     |
+|--------|--------------------------|---------------------------------|
+| POST   | `/assets/`               | Create a new asset record       |
+| GET    | `/assets/`               | Retrieve list of all assets     |
+| PUT    | `/assets/{asset_id}`     | Update asset by ID              |
+| DELETE | `/assets/{asset_id}`     | Delete asset by ID              |
+| GET    | `/assets/price/`         | Fetch live price for a token    |
+| GET    | `/assets/portfolio/value`| Portfolio value with live prices|
 
 Request/response schemas are defined in `app/schemas.py`.
 
@@ -108,13 +114,25 @@ portfolio-tracker/
 
 ## Roadmap & Future Enhancements
 
-1. **Authentication:** Add JWT-based login and user management
-2. **Portfolio Valuation:** Endpoints for current value, gains/losses
-3. **Background Tasks:** Periodic fetching of asset prices
-4. **Data Visualization:** Integrate a frontend dashboard
-5. **Rust Integration:** Offload heavy calculations to a Rust microservice
-6. **Testing:** Add unit tests with pytest and CI integration
-7. **Deployment:** Containerize with Docker, deploy via Fly.io or Render
+- [x] Full CRUD for assets
+- [x] Live token price endpoint (BTC, ETH, SOL, expand to more tokens)
+- [x] Portfolio total value calculation
+- [ ] Per-asset and total profit/loss (P&L) calculation
+- [ ] User-friendly error handling and responses
+- [ ] API documentation and endpoint summaries/examples
+- [ ] Automated testing (pytest)
+- [ ] CORS policy and health check endpoint
+- [ ] Pagination for asset listings
+- [ ] Multi-currency portfolio display
+- [ ] Unique asset constraint and improved validation
+- [ ] Authentication (API key or user login)
+- [ ] Async and background price fetching
+- [ ] Centralized config and requirements pinning
+- [ ] Logging and production monitoring
+- [ ] Frontend dashboard (React, Next.js, or plain HTML)
+- [ ] Cloud deployment (Fly.io, Render, Railway) with HTTPS
+- [ ] CI/CD for auto-deploy
+- [ ] Rust microservice integration (optional)
 
 ## Contributing
 
