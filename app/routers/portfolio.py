@@ -41,6 +41,7 @@ def get_portfolio_value():
     total_value = 0.0
     total_pnl = 0.0
     breakdown = []
+    warnings = []
 
     for asset in assets:
         price = fetch_token_price(asset.symbol)
@@ -48,29 +49,33 @@ def get_portfolio_value():
             breakdown.append({
                 "symbol": asset.symbol,
                 "quantity": asset.quantity,
-                "average_price": asset.average_price,
+                "average_price": round(asset.average_price, 2),
                 "live_price_usd": None,
                 "value_usd": None,
                 "pnl_usd": None,
                 "error": "Price not found"
             })
+            warnings.append(f"Price not found for {asset.symbol}")
             continue
-        value = asset.quantity * price
-        pnl = (price - asset.average_price) * asset.quantity
+        value = round(asset.quantity * price, 2)
+        pnl = round((price - asset.average_price) * asset.quantity, 2)
         total_value += value
         total_pnl += pnl
         breakdown.append({
             "symbol": asset.symbol,
             "quantity": asset.quantity,
-            "average_price": asset.average_price,
-            "live_price_usd": price,
-            "value_usd": value,
-            "pnl_usd": pnl
+            "average_price": round(asset.average_price, 2),
+            "live_price_usd": round(price, 2),
+            "value_usd": round(value, 2),
+            "pnl_usd": round(pnl, 2)
         })
 
 
-    return {
-        "total_portfolio_value_usd": total_value,
-        "total_portfolio_pnl_usd": total_pnl,
+    response = {
+        "total_portfolio_value_usd": round(total_value, 2),
+        "total_portfolio_pnl_usd": round(total_pnl, 2),
         "assets": breakdown
     }
+    if warnings:
+        response["warnings"] = warnings
+    return response
