@@ -6,7 +6,7 @@ from .models import Asset
 from .schemas import AssetCreate
 
 def create_asset(*, asset: AssetCreate) -> Asset:
-    asset_obj = Asset.from_orm(asset)
+    asset_obj = Asset.model_validate(asset)
     with Session(engine) as session:
         session.add(asset_obj)
         session.commit()
