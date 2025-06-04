@@ -29,7 +29,7 @@ def remove_asset(asset_id: int):
     return {"ok": True}
 
 @router.get("/price/")
-def get_token_price(symbol: str = Query(..., example="SOL")):
+def get_token_price(symbol: str = Query(..., openapi_examples="SOL")):
     price = fetch_token_price(symbol)
     if price is None:
         raise HTTPException(status_code=404, detail="Token not found or no price available")
